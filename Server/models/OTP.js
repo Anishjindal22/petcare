@@ -33,6 +33,7 @@ async function sendVerificationOTP(email,otp) {
 
 OTPSchema.pre("save", async function (next) {
     await sendVerificationOTP(this.email, this.otp);
+    console.log(otp)
     next();
 }) 
 

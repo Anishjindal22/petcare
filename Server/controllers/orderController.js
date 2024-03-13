@@ -18,10 +18,26 @@ exports.newOrder = async(req,res) => {
             }) 
          }  
 
-        const order = Await Order.create({
-
+        const order = await Order.create({
+            shippingInfo,
+            orderItems,
+            paymentInfo,
+            itemsPrice,
+            taxPrice,
+            shippingPrice,
+            totalPrice,
+            paidAt: Date.now(),
+            user: req.user._id
         }) 
+
+        res.status(200).json({
+            success:true,
+            order
+        })
     } catch (error) {
-        
+        return res.status(401).json({
+            success:false,
+            message:"Internal servere error not able to place the order please try again later!!"
+        })
     }
 }

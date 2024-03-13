@@ -24,4 +24,6 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         enum: ['dogWalk', 'doctorAppointment', 'grooming'],
         required: true
-})
+}
+}
+)
