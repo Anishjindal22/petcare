@@ -46,6 +46,13 @@ exports.createNewProduct = async (req,res) => {
 // get all products 
 exports.getAllProducts = async(req,res) =>{
     const Products = await Product.find();
+    if(!Products){
+        return res.status(404).json({
+            success:false,
+            message:"Product not found"
+        })
+    }
+
     return res.status(200).json({
         success:true,
         message:"All products fetched successfully",
