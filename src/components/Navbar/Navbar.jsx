@@ -8,58 +8,50 @@ import "./Navbar.css";
 const isLoggedIn = true;
 export const Navbar = () => {
   return (
-    <div className="main flex flex-row">
-      <div className="flex">
+    <div className="main">
+      <div>
         <img
-          src="https://res.cloudinary.com/duu15ts5c/image/upload/v1709972585/GouravProject/assests/Screenshot_2024-03-09_135131_es3aic.png"
+          src="https://res.cloudinary.com/duu15ts5c/image/upload/v1710520092/GouravProject/assests/5c215f4c-8e58-4f66-8c12-4239a4a7d107.png"
           alt=""
-          height={100}
-          width={200}
+          className="logo"
         />
       </div>
-      <div className="flex flex-row">
+
+      <div className="Nav-Links">
         {/* Home */}
-        <NavLink to={"/"}>
-          <div>
-            <IoMdHome />
-            <h2>Home</h2>
-          </div>
+        <NavLink to={"/"} className="Nav-items">
+          <IoMdHome />
+          <h2>Home</h2>
         </NavLink>
 
         {/* products */}
-        <NavLink to={"/products"}>
-          <div>
-            <FaShop />
-            <h2>Products</h2>
-          </div>
+        <NavLink to={"/products"} className="Nav-items">
+          <FaShop />
+          <h2>Products</h2>
         </NavLink>
 
         {/* Doctors */}
-        <NavLink to={"/doctors"}>
-          <div>
-            <FaUserDoctor />
-            <h2>Medical checkup</h2>
-          </div>
+        <NavLink to={"/doctors"} className="Nav-items">
+          <FaUserDoctor />
+          <h2>Medical checkup</h2>
         </NavLink>
 
         {isLoggedIn ? (
-          <div>
-            <NavLink to={"/cart"}>
-              <div>
-                <FaShoppingCart />
-              </div>
+          <div className="Nav-items">
+            <NavLink to={"/cart"} className="Nav-items">
+              <FaShoppingCart />
             </NavLink>
 
             <button>Log out</button>
           </div>
         ) : (
           <div>
-            <NavLink to={"/login"}>
-              <button>Log in</button>
+            <NavLink to={"/login"} className="Nav-items">
+              Log in
             </NavLink>
 
-            <NavLink to={"/signup"}>
-              <button>signup</button>
+            <NavLink to={"/signup"} className="Nav-items">
+              signup
             </NavLink>
           </div>
         )}

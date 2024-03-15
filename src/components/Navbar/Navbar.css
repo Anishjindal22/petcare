@@ -1,3 +1,49 @@
-.active{
-    color: orange;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.active {
+  color: orange;
+}
+
+.logo {
+  height: 70px;
+  width: 200px;
+  padding-left: 20px;
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: hidden;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #fff;
+  border-bottom: 2px solid #2d2929;
+  z-index: 1000;
+}
+
+.Nav-Links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-right: 20px;
+}
+
+.Nav-items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  scale: 1.1;
+}
+
+body {
+  padding-top: 72px;
 }
