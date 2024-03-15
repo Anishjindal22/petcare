@@ -12,7 +12,7 @@ const Products = () => {
   }, [dispatch]);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchedProducts, setSearchedProducts] = useState([products]);
+  const [searchedProducts, setSearchedProducts] = useState([]);
 
   useEffect(() => {
     if (products && products.length > 0) {
@@ -31,15 +31,19 @@ const Products = () => {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={handleSearchChange}
-        placeholder="Search products..."
-      />
+    <div className="container">
+      <div className="input-wrapper">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search products..."
+        />
+      </div>
       {loading ? (
-        <Loader />
+        <div className="loader-container">
+          <Loader />
+        </div>
       ) : (
         <div>
           {searchedProducts && searchedProducts.length > 0 ? (
@@ -47,7 +51,7 @@ const Products = () => {
               <ProductItems product={product} key={product.id} />
             ))
           ) : (
-            <p>No products found.</p>
+            <p className="no-products">No products found.</p>
           )}
         </div>
       )}

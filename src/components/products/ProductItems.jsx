@@ -2,6 +2,7 @@ import React from "react";
 import ReactStars from "react-rating-stars-component";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../actions/cartActions";
+import "./ProductItems.css";
 
 const ProductItems = ({ product }) => {
   const dispatch = useDispatch();

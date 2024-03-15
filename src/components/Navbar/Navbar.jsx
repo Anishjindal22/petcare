@@ -5,7 +5,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-const isLoggedIn = true;
+const isLoggedIn = false;
 export const Navbar = () => {
   return (
     <div className="main">
