@@ -3,13 +3,15 @@ import "./SignUp.css";
 import { toast } from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const SignUp = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    petSize: "small", // Default value for petSize
+    petSize: "small",
     password: "",
     confirmPassword: "",
   });
@@ -24,14 +26,35 @@ const SignUp = () => {
     }));
   };
 
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
+  const handleOnSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
 
-    if (password !== confirmPassword) {
-      toast.error("Passwords Do Not Match");
-      return;
+    try {
+      if (password !== confirmPassword) {
+        toast.error("Passwords Do Not Match");
+        return; // Exit early if passwords don't match
+      }
+
+      const res = await axios.post(
+        "http://localhost:4000/api/v1/user/signUp",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res.data.success) {
+        toast.success("User registered successfully");
+        navigate("/login");
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error("Error occurred during registration:", error);
+      toast.error("Something went wrong while registering the user");
     }
-    console.log(formData);
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +63,7 @@ const SignUp = () => {
   return (
     <div>
       <h1>Sign Up Form</h1>
-      <form className="form" onSubmit={handleOnSubmit}>
+      <form className="form" method="POST" onSubmit={handleOnSubmit}>
         <label htmlFor="firstName">First Name:</label>
         <input
           type="text"

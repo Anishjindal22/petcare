@@ -45,7 +45,7 @@ export const Navbar = () => {
             <button>Log out</button>
           </div>
         ) : (
-          <div>
+          <div className="Nav-items gap-3">
             <NavLink to={"/login"} className="Nav-items">
               Log in
             </NavLink>

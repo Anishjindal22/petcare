@@ -12,15 +12,14 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" index element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/cart" element={<Cart />} />
-        </Routes>
-      </Suspense>
+
+      <Routes>
+        <Route path="/" index element={<Home />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/cart" element={<Cart />} />
+      </Routes>
     </div>
   );
 };
