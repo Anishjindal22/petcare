@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { showLoading, hideLoading } from "../../redux/features/alertSlice";
 import axios from "axios";
 import "./Login.css";
 
@@ -21,14 +23,16 @@ const Login = () => {
     }));
   };
 
+  const dispatch = useDispatch();
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     try {
+      dispatch(showLoading());
       const res = await axios.post(
         "http://localhost:4000/api/v1/user/login",
         loginDetails
       );
-
+      dispatch(hideLoading());
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         toast.success("Login successful");
@@ -37,6 +41,7 @@ const Login = () => {
         toast.error(res.data.message);
       }
     } catch (error) {
+      dispatch(hideLoading());
       console.error(error);
       toast.error("Something went wrong");
     }

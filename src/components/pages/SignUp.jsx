@@ -4,9 +4,12 @@ import { toast } from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { showLoading, hideLoading } from "../../redux/features/alertSlice";
 import axios from "axios";
 const SignUp = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,14 +30,14 @@ const SignUp = () => {
   };
 
   const handleOnSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
 
     try {
       if (password !== confirmPassword) {
         toast.error("Passwords Do Not Match");
-        return; // Exit early if passwords don't match
+        return;
       }
-
+      dispatch(showLoading());
       const res = await axios.post(
         "http://localhost:4000/api/v1/user/signUp",
         formData,
@@ -44,14 +47,15 @@ const SignUp = () => {
           },
         }
       );
+      dispatch(hideLoading());
       if (res.data.success) {
-        toast.success("User registered successfully");
         navigate("/login");
         toast.success(res.data.message);
       } else {
         toast.error(res.data.message);
       }
     } catch (error) {
+      dispatch(hideLoading());
       console.error("Error occurred during registration:", error);
       toast.error("Something went wrong while registering the user");
     }

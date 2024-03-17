@@ -29,19 +29,16 @@
 
 .Nav-Links {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: center;
   gap: 20px;
   padding-right: 20px;
 }
 
 .Nav-items {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
-  scale: 1.1;
+  transform: scale(1.1); /* Corrected 'scale' property */
 }
 
 body {

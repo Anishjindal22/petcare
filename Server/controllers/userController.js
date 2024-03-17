@@ -202,3 +202,45 @@ exports.changePassword = async (req, res) => {
     });
   }
 };
+
+exports.authController = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.userId });
+    if (!user) {
+      return res.status(200).send({
+        message: "User not found",
+        success: false,
+      });
+    } else {
+      res.status(200).send({
+        success: true,
+        data: {
+          name: user.firstName + " " + user.lastName,
+          email: user.email,
+          account: user.accountType,
+          image: user.image,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "auth error",
+      success: false,
+      error,
+    });
+  }
+};
+
+exports.logout = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.userId });
+
+    if (!user) {
+      return res.status(200).send({
+        success: false,
+        message: "User is not registered with us",
+      });
+    }
+  } catch (error) {}
+};

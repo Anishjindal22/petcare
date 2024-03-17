@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdHome } from "react-icons/io";
 import { FaShop } from "react-icons/fa6";
 import { FaUserDoctor } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-const isLoggedIn = false;
+
 export const Navbar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const checkLoggedIn = () => {
+    if (localStorage.getItem("token")) {
+      setIsLoggedIn(true);
+    }
+  };
+  useEffect(() => {
+    checkLoggedIn();
+  }, []);
   return (
     <div className="main">
       <div>

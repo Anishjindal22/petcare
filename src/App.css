@@ -2,15 +2,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
 @layer utilities {
-    .gradient-custom {
-      background: linear-gradient(123.77deg, #8a2be2 -6.46%, orange 59.04%, #f8f8ff 124.53%);
-    }
+  .gradient-custom {
+    background: linear-gradient(
+      123.77deg,
+      #8a2be2 -6.46%,
+      orange 59.04%,
+      #f8f8ff 124.53%
+    );
   }
-  
-html,body{
-    overflow-x: hidden;
+}
+
+html,
+body {
+  overflow-x: hidden;
 }
 
 .spinner {
@@ -127,25 +138,25 @@ html,body{
 
 .section_heading {
   --tw-text-opacity: 1;
-  color: rgb(241 242 255/var(--tw-text-opacity));
+  color: rgb(241 242 255 / var(--tw-text-opacity));
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 2rem;
 }
 
-@media (min-width: 1024px){
+@media (min-width: 1024px) {
   .section_heading {
     font-size: 2.25rem;
     line-height: 2.5rem;
-}
+  }
 }
 
 .yellowButton {
   --tw-bg-opacity: 1;
   --tw-text-opacity: 1;
-  background-color: rgb(255 214 10/var(--tw-bg-opacity));
+  background-color: rgb(255 214 10 / var(--tw-bg-opacity));
   border-radius: 0.375rem;
-  color: rgb(0 8 20/var(--tw-text-opacity));
+  color: rgb(0 8 20 / var(--tw-text-opacity));
   cursor: pointer;
   font-weight: 600;
   padding: 8px 20px;
@@ -153,7 +164,7 @@ html,body{
 
 .blackButton {
   --tw-bg-opacity: 1;
-  background-color: rgb(22 29 41/var(--tw-bg-opacity));
+  background-color: rgb(22 29 41 / var(--tw-bg-opacity));
   border-radius: 0.375rem;
   cursor: pointer;
   font-weight: 600;

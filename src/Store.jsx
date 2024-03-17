@@ -1,23 +1,31 @@
-// store.js
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux";
 import { thunk } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
+import { alertSlice } from "./redux/features/alertSlice";
 import { productReducer } from "./reducers/productReducer";
-import { cartReducer } from "./reducers/cartReducer"; // Import cart reducer
+import { cartReducer } from "./reducers/cartReducer";
 
-const reducer = combineReducers({
+// Combine reducers
+const rootReducer = combineReducers({
+  alerts: alertSlice.reducer,
   products: productReducer,
-  cart: cartReducer, // Add cart reducer
+  cart: cartReducer,
 });
 
+// Create initial state
 const initialState = {};
 
+// Define middleware
 const middleware = [thunk];
 
-const store = createStore(
-  reducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
+// Configure store
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(...middleware),
+  devTools: process.env.NODE_ENV !== "production",
+  preloadedState: initialState,
+});
 
 export default store;

@@ -22,7 +22,8 @@ const UserSchema = new mongoose.Schema({
   petSize: {
     type: String,
     required: true,
-    enum: ["small", "medium", "Large"],
+    enum: ["None", "small", "medium", "Large"],
+    defalt: "None",
   },
   accountType: {
     type: String,
