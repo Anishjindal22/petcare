@@ -10,7 +10,11 @@ import { useSelector } from "react-redux";
 import ProtectedRoute from "./routes/ProtectedRoutes";
 import { LoginProtectedRoute } from "./routes/LoginProtectedRoute";
 import Loader from "./components/Loader/Loader";
+import { Orders } from "./components/pages/Orders";
+import { Appointments } from "./components/pages/Appointments";
+import { Error } from "./components/pages/Error";
 import "./App.css";
+
 const App = () => {
   const { loading } = useSelector((state) => state.alerts);
   return (
@@ -48,6 +52,23 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/orders"
+              element={
+                <ProtectedRoute>
+                  <Orders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/appointments"
+              element={
+                <ProtectedRoute>
+                  <Appointments />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Error />} />
           </Routes>
         </div>
       )}

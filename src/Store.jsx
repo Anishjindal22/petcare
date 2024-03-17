@@ -5,10 +5,12 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { alertSlice } from "./redux/features/alertSlice";
 import { productReducer } from "./reducers/productReducer";
 import { cartReducer } from "./reducers/cartReducer";
+import { userSlice } from "./redux/features/userSlice";
 
 // Combine reducers
 const rootReducer = combineReducers({
   alerts: alertSlice.reducer,
+  user: userSlice.reducer,
   products: productReducer,
   cart: cartReducer,
 });
