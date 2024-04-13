@@ -3,6 +3,10 @@ import Layout from "../../components/layout/Layout";
 import toast from "react-hot-toast";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Form, Input, Button } from "antd";
+import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
+import "./signup.css";
+
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,12 +15,19 @@ const SignUp = () => {
   const [phone, setPhone] = useState("");
   const [answer, setAnswer] = useState("");
   const navigate = useNavigate();
-  const handleOnSubmit = async (e) => {
-    e.preventDefault();
+
+  const handleOnSubmit = async (values) => {
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/auth/register`,
-        { name, email, password, phone, address, answer }
+        {
+          name: values.name,
+          email: values.email,
+          password: values.password,
+          phone: values.phone,
+          address: values.address,
+          answer: values.answer,
+        }
       );
       if (res.data.success) {
         toast.success(res.data.message);
@@ -25,63 +36,92 @@ const SignUp = () => {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error("something went wrong");
+      console.error(error);
+      toast.error("Something went wrong");
     }
   };
+
   return (
     <Layout>
-      <h1>Register Now</h1>
-      <div>
-        <form onSubmit={handleOnSubmit}>
-          <input
-            type="text"
-            required
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            type="email"
-            required
-            placeholder="enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            required
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            type="address"
-            required
-            placeholder="Enter your address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          <input
-            type="number"
-            required
-            placeholder="Enter your phone number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          <input
-            type="text"
-            required
-            placeholder="Enter your answer"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-          />
-          <button>Submit</button>
-
-          <NavLink to={"/login"}>
-            <h2>Already a user ? Register here</h2>
-          </NavLink>
-        </form>
+      <div className="main-container">
+        <div className="login-container">
+          <h1>Register Now</h1>
+          <Form onFinish={handleOnSubmit} className="form">
+            <Form.Item
+              name="name"
+              rules={[{ required: true, message: "Please enter your name!" }]}
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Enter your name"
+              />
+            </Form.Item>
+            <Form.Item
+              name="email"
+              rules={[
+                { required: true, message: "Please enter your email!" },
+                { type: "email", message: "Please enter a valid email!" },
+              ]}
+            >
+              <Input
+                prefix={<MailOutlined className="site-form-item-icon" />}
+                placeholder="Enter your email"
+              />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[
+                { required: true, message: "Please enter your password!" },
+              ]}
+            >
+              <Input.Password
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                placeholder="Enter your password"
+              />
+            </Form.Item>
+            <Form.Item
+              name="address"
+              rules={[
+                { required: true, message: "Please enter your address!" },
+              ]}
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Enter your address"
+              />
+            </Form.Item>
+            <Form.Item
+              name="phone"
+              rules={[
+                { required: true, message: "Please enter your phone number!" },
+              ]}
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Enter your phone number"
+              />
+            </Form.Item>
+            <Form.Item
+              name="answer"
+              rules={[{ required: true, message: "Please enter your answer!" }]}
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Enter your answer"
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+          <div className="link-container">
+            <NavLink to={"/login"} className="link">
+              Already a user ? Register here
+            </NavLink>
+          </div>
+        </div>
       </div>
     </Layout>
   );
