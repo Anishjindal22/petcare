@@ -4,21 +4,22 @@ import toast from "react-hot-toast";
 import AdminMenu from "../../components/layout/AdminMenu";
 import Layout from "../../components/layout/Layout";
 import { useAuth } from "../../context/auth";
-import moment from "moment";
-import { Select } from "antd";
+import { Select, Table } from "antd";
+import { Pie } from "@ant-design/charts";
+
 const { Option } = Select;
 
 const AdminOrders = () => {
-  const [status, setStatus] = useState([
+  const [statusOptions] = useState([
     "Not Process",
     "Processing",
     "Shipped",
-    "deliverd",
-    "cancel",
+    "Delivered",
+    "Cancelled",
   ]);
-  const [changeStatus, setCHangeStatus] = useState("");
   const [orders, setOrders] = useState([]);
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
+
   const getOrders = async () => {
     try {
       const { data } = await axios.get(
@@ -31,8 +32,44 @@ const AdminOrders = () => {
   };
 
   useEffect(() => {
-    if (auth?.token) getOrders();
+    if (auth?.token) {
+      getOrders();
+    }
   }, [auth?.token]);
+
+  useEffect(() => {
+    const orderStatusData = orders.reduce((acc, order) => {
+      acc[order.status] = acc[order.status] ? acc[order.status] + 1 : 1;
+      return acc;
+    }, {});
+
+    const pieData = Object.entries(orderStatusData).map(([status, count]) => ({
+      type: status,
+      value: count,
+    }));
+
+    // Configuration for the pie chart
+    const pieConfig = {
+      appendPadding: 10,
+      data: pieData,
+      angleField: "value",
+      colorField: "type",
+      radius: 0.8,
+      label: {
+        formatter: (datum) => {
+          if (datum && typeof datum === "object" && datum.type && datum.value) {
+            return `${datum.type}: ${datum.value}`;
+          }
+          return "";
+        },
+      },
+      interactions: [{ type: "element-active" }],
+    };
+
+    return () => {
+      // Cleanup code here if needed
+    };
+  }, [orders, auth]);
 
   const handleChange = async (orderId, value) => {
     try {
@@ -47,6 +84,52 @@ const AdminOrders = () => {
       console.log(error);
     }
   };
+
+  const columns = [
+    {
+      title: "#",
+      dataIndex: "index",
+      key: "index",
+      render: (_, record, index) => index + 1,
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (orderStatus, record) => (
+        <Select
+          bordered={false}
+          onChange={(value) => handleChange(record._id, value)}
+          defaultValue={orderStatus}
+        >
+          {statusOptions.map((s, i) => (
+            <Option key={i} value={s}>
+              {s}
+            </Option>
+          ))}
+        </Select>
+      ),
+    },
+    {
+      title: "Buyer",
+      dataIndex: "buyer",
+      key: "buyer",
+      render: (buyer) => buyer.name,
+    },
+    {
+      title: "Payment",
+      dataIndex: "payment",
+      key: "payment",
+      render: (payment) => (payment.success ? "Success" : "Failed"),
+    },
+    {
+      title: "Quantity",
+      dataIndex: "products",
+      key: "products",
+      render: (products) => products.length,
+    },
+  ];
+
   return (
     <Layout>
       <div className="row dashboard">
@@ -55,70 +138,51 @@ const AdminOrders = () => {
         </div>
         <div className="col-md-9">
           <h1 className="text-center">All Orders</h1>
-          {orders?.map((o, i) => {
-            return (
-              <div className="border shadow">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Buyer</th>
-                      <th scope="col"> date</th>
-                      <th scope="col">Payment</th>
-                      <th scope="col">Quantity</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{i + 1}</td>
-                      <td>
-                        <Select
-                          bordered={false}
-                          onChange={(value) => handleChange(o._id, value)}
-                          defaultValue={o?.status}
-                        >
-                          {status.map((s, i) => (
-                            <Option key={i} value={s}>
-                              {s}
-                            </Option>
-                          ))}
-                        </Select>
-                      </td>
-                      <td>{o?.buyer?.name}</td>
-                      <td>{moment(o?.createAt).fromNow()}</td>
-                      <td>{o?.payment.success ? "Success" : "Failed"}</td>
-                      <td>{o?.products?.length}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="container">
-                  {o?.products?.map((p, i) => (
-                    <div className="row mb-2 p-3 card flex-row" key={p._id}>
-                      <div className="col-md-4">
-                        <img
-                          src={`/api/v1/product/product-photo/${p._id}`}
-                          className="card-img-top"
-                          alt={p.name}
-                          width="100px"
-                          height={"100px"}
-                        />
-                      </div>
-                      <div className="col-md-8">
-                        <p>{p.name}</p>
-                        <p>{p.description.substring(0, 30)}</p>
-                        <p>Price : {p.price}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+          {/* Pie chart component */}
+          <PieChart orders={orders} />
+          {/* Table component */}
+          <Table
+            dataSource={orders}
+            columns={columns}
+            rowKey={(record) => record._id}
+            pagination={{ pageSize: 5 }}
+          />
         </div>
       </div>
     </Layout>
   );
+};
+
+// Separate PieChart component
+const PieChart = ({ orders }) => {
+  const orderStatusData = orders.reduce((acc, order) => {
+    acc[order.status] = acc[order.status] ? acc[order.status] + 1 : 1;
+    return acc;
+  }, {});
+
+  const pieData = Object.entries(orderStatusData).map(([status, count]) => ({
+    type: status,
+    value: count,
+  }));
+
+  const pieConfig = {
+    appendPadding: 10,
+    data: pieData,
+    angleField: "value",
+    colorField: "type",
+    radius: 0.8,
+    label: {
+      formatter: (datum) => {
+        if (datum && typeof datum === "object" && datum.type && datum.value) {
+          return `${datum.type}: ${datum.value}`;
+        }
+        return "";
+      },
+    },
+    interactions: [{ type: "element-active" }],
+  };
+
+  return <Pie {...pieConfig} />;
 };
 
 export default AdminOrders;

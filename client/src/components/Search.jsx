@@ -49,9 +49,7 @@ const Search = () => {
                       <div className="btn-container">
                         <button
                           className={`${
-                            p.quantity > 0
-                              ? "btn btn-primary"
-                              : "btn btn-primary disabled"
+                            p.quantity > 0 ? "btn-blue1" : "btn-blue1 disabled"
                           }`}
                         >
                           Add to cart{" "}
@@ -99,7 +97,7 @@ const Search = () => {
                     }
                     actions={[
                       <div className="btn-container-disabled">
-                        <button className="btn btn-primary disabled">
+                        <button className="btn-blue1 disabled">
                           Add to cart{" "}
                         </button>
                         <button className="btn btn-secondary disabled">

@@ -1,27 +1,80 @@
 import React, { useState, useEffect } from "react";
-import UserMenu from "../../components/layout/UserMenu";
-import Layout from "./../../components/layout/Layout";
 import axios from "axios";
+import UserMenu from "../../components/layout/UserMenu";
+import Layout from "../../components/layout/Layout";
 import { useAuth } from "../../context/auth";
-import moment from "moment";
+import { Table, Tag } from "antd";
+import "./Orders.css";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const [auth, setAuth] = useAuth();
-  const getOrders = async () => {
+  const [auth] = useAuth();
+
+  const columns = [
+    {
+      title: "#",
+      dataIndex: "index",
+      key: "index",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => (
+        <Tag color={status === "Delivered" ? "green" : "red"}>{status}</Tag>
+      ),
+    },
+    {
+      title: "Buyer",
+      dataIndex: "buyer",
+      key: "buyer",
+      render: (buyer) => buyer.name,
+    },
+    {
+      title: "Payment",
+      dataIndex: "payment",
+      key: "payment",
+      render: (payment) => (
+        <Tag color={payment.success ? "green" : "red"}>
+          {payment.success ? "Success" : "Failed"}
+        </Tag>
+      ),
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+  ];
+
+  const fetchData = async () => {
     try {
       const { data } = await axios.get(
         "http://localhost:8080/api/v1/auth/orders"
       );
-      setOrders(data);
+      const formattedOrders = data.map((order, index) => ({
+        key: order._id,
+        index: index + 1,
+        status: order.status,
+        buyer: {
+          name: order.buyer.name,
+        },
+        payment: {
+          success: order.payment.success,
+        },
+        quantity: order.products.length,
+        products: order.products,
+      }));
+      setOrders(formattedOrders);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (auth?.token) getOrders();
+    if (auth?.token) fetchData();
   }, [auth?.token]);
+
   return (
     <Layout title={"Your Orders"}>
       <div className="container-flui p-3 m-3 dashboard">
@@ -31,54 +84,14 @@ const Orders = () => {
           </div>
           <div className="col-md-9">
             <h1 className="text-center">All Orders</h1>
-            {orders?.map((o, i) => {
-              return (
-                <div className="border shadow">
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Buyer</th>
-                        <th scope="col"> date</th>
-                        <th scope="col">Payment</th>
-                        <th scope="col">Quantity</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{i + 1}</td>
-                        <td>{o?.status}</td>
-                        <td>{o?.buyer?.name}</td>
-                        <td>{moment(o?.createAt).fromNow()}</td>
-                        <td>{o?.payment.success ? "Success" : "Failed"}</td>
-                        <td>{o?.products?.length}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className="container">
-                    {o?.products?.map((p, i) => (
-                      <div className="row mb-2 p-3 card flex-row" key={p._id}>
-                        <div className="col-md-4">
-                          <img
-                            src={`/api/v1/product/product-photo/${p._id}`}
-                            className="card-img-top"
-                            alt={p.name}
-                            width="100px"
-                            height={"100px"}
-                          />
-                        </div>
-                        <div className="col-md-8">
-                          <p>{p.name}</p>
-                          <p>{p.description.substring(0, 30)}</p>
-                          <p>Price : {p.price}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+            <div className="border shadow orders-table-container">
+              <Table
+                columns={columns}
+                dataSource={orders}
+                pagination={{ pageSize: 10 }}
+                className="orders-table"
+              />
+            </div>
           </div>
         </div>
       </div>

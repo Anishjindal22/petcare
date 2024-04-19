@@ -4,8 +4,8 @@ import Layout from "../../components/layout/Layout";
 import { useAuth } from "../../context/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
-
-const Profie = () => {
+import "./profile.css";
+const Profile = () => {
   const [auth, setAuth] = useAuth();
 
   const [name, setName] = useState("");
@@ -33,11 +33,9 @@ const Profie = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("something went wrong");
+      toast.error("Something went wrong");
     }
   };
-
-  // getting user data
 
   useEffect(() => {
     const { email, name, phone, address } = auth?.user || {};
@@ -55,41 +53,45 @@ const Profie = () => {
             <UserMenu />
           </div>
           <div className="col-md-9">
-            <div>
+            <div className="profile-container">
               <form onSubmit={handleOnSubmit}>
                 <input
+                  className="profile-input"
                   type="text"
                   placeholder="Enter your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
                 <input
+                  className="profile-input"
                   type="email"
-                  placeholder="enter your email"
+                  placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled
                 />
                 <input
+                  className="profile-input"
                   type="password"
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <input
+                  className="profile-input"
                   type="address"
                   placeholder="Enter your address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                 />
                 <input
+                  className="profile-input"
                   type="number"
                   placeholder="Enter your phone number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
-
-                <button>Update profile</button>
+                <button className="profile-button">Update profile</button>
               </form>
             </div>
           </div>
@@ -99,4 +101,4 @@ const Profie = () => {
   );
 };
 
-export default Profie;
+export default Profile;

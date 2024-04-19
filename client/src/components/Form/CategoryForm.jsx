@@ -1,28 +1,28 @@
 import React from "react";
+import { Form, Input, Button } from "antd";
 
 const CategoryForm = ({ handleSubmit, value, setValue }) => {
+  const onFinish = (formData) => {
+    handleSubmit(formData.name);
+  };
+
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <div classname="mb-3">
-          <input
-            type="text"
-            classname="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            placeholder="Enter new category"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-          />
-          <div id="emailHelp" classname="form-text">
-            We'll never share your email with anyone else.
-          </div>
-        </div>
-        <button type="submit" classname="btn btn-primary">
+    <Form onFinish={onFinish} initialValues={{ name: value }}>
+      <Form.Item
+        name="name"
+        rules={[{ required: true, message: "Please enter a category!" }]}
+      >
+        <Input
+          placeholder="Enter new category"
+          onChange={(e) => setValue(e.target.value)}
+        />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
           Submit
-        </button>
-      </form>
-    </>
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

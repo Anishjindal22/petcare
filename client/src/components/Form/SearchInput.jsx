@@ -2,6 +2,7 @@ import React from "react";
 import { useSearch } from "../../context/Search";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./search.css";
 const SearchInput = () => {
   const [values, setValues] = useSearch();
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const SearchInput = () => {
           value={values.keyword}
           onChange={(e) => setValues({ ...values, keyword: e.target.value })}
         />
-        <button className="btn  btn-primary" type="submit">
+        <button className="google-style-button" type="submit">
           Search
         </button>
       </form>

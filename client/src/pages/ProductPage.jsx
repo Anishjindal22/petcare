@@ -160,7 +160,7 @@ const ProductPage = () => {
           <div className="categories">
             {/* reset al filters */}
             <button
-              className="btn btn-primary "
+              className="btn-blue1 "
               onClick={() => window.location.reload()}
             >
               Reset filter
@@ -190,7 +190,7 @@ const ProductPage = () => {
                     actions={[
                       <div className="btn-container">
                         <button
-                          className="btn btn-primary"
+                          className="btn-blue1"
                           onClick={() => {
                             setCart([...cart, p]);
                             localStorage.setItem(
@@ -203,7 +203,7 @@ const ProductPage = () => {
                           Add to cart{" "}
                         </button>
                         <button
-                          className="btn btn-secondary"
+                          className="btn-sec1"
                           onClick={() => navigate(`/products/${p.slug}`)}
                         >
                           Know more
@@ -238,12 +238,10 @@ const ProductPage = () => {
                     }
                     actions={[
                       <div className="btn-container-disabled">
-                        <button className="btn btn-primary disabled">
+                        <button className="btn-blue1 disabled">
                           Add to cart{" "}
                         </button>
-                        <button className="btn btn-secondary disabled">
-                          Know more
-                        </button>
+                        <button className="btn-sec1 disabled">Know more</button>
                       </div>,
                     ]}
                   >

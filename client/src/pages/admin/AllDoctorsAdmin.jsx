@@ -4,8 +4,10 @@ import Layout from "../../components/layout/Layout";
 import axios from "axios";
 import { Table } from "antd";
 import toast from "react-hot-toast";
+
 const AllDoctorsAdmin = () => {
   const [doctors, setDoctors] = useState([]);
+
   const getDoctors = async () => {
     try {
       const res = await axios.get(
@@ -18,12 +20,18 @@ const AllDoctorsAdmin = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getDoctors();
   }, []);
+
+  // Function to fetch doctors data when account status changes
   useEffect(() => {
-    console.log(doctors);
-  }, [doctors]);
+    const interval = setInterval(() => {
+      getDoctors();
+    }, 5000); // Poll every 5 seconds to check for updates, adjust as needed
+    return () => clearInterval(interval);
+  }, []);
 
   // function to change account status
   const handleAccountStatus = async (record, status) => {
@@ -34,6 +42,8 @@ const AllDoctorsAdmin = () => {
       );
       if (res.data.success) {
         toast.success(res.data.message);
+        // If the status change is successful, refetch the data to get the updated status
+        getDoctors();
       }
     } catch (error) {
       toast.error("Something went wrong");
