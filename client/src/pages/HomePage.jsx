@@ -15,23 +15,39 @@ const HomePage = () => {
         />
       </div>
 
-      <TypeAnimation
-        sequence={[
-          // Same substring at the start will only be typed out once, initially
-          "We provide Dog grooming",
-          1000, // wait 1s before replacing "Mice" with "Hamsters"
-          "We provide vetenary services",
-          1000,
-          "We provide dog walk services",
-          1000,
-          "We provide dog products",
-          1000,
-        ]}
-        wrapper="span"
-        speed={50}
-        style={{ fontSize: "2em", display: "inline-block" }}
-        repeat={Infinity}
-      />
+      <div className="customer-review">
+        <img
+          src="https://res.cloudinary.com/duu15ts5c/image/upload/v1716366352/GouravProject/assests/Screenshot_2024-05-22_135331_htt7hl.png"
+          alt=""
+        />
+      </div>
+      <div className="tp">
+        <TypeAnimation
+          className="type-animation"
+          sequence={[
+            "We provide Dog grooming",
+            1000,
+            "We provide vetenary services",
+            1000,
+            "We provide dog walk services",
+            1000,
+            "We provide dog products",
+            1000,
+          ]}
+          wrapper="span"
+          speed={50}
+          style={{ fontSize: "2em", display: "inline-block" }}
+          repeat={Infinity}
+        />
+      </div>
+
+      <div className="sdi">
+        <img
+          src="https://res.cloudinary.com/duu15ts5c/image/upload/v1716368816/GouravProject/assests/Screenshot_2024-05-22_143634_jdrw9k.png"
+          alt=""
+          className="sdii"
+        />
+      </div>
     </Layout>
   );
 };
